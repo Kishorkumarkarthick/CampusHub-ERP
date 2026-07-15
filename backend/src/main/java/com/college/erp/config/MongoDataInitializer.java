@@ -74,28 +74,32 @@ public class MongoDataInitializer implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
-        if (userRepository.count() == 0) {
-            String defaultPasswordHash = passwordEncoder.encode("password123");
+        String defaultPasswordHash = passwordEncoder.encode("password123");
 
-            // 1. Generate 10 Admins
-            String[] adminEmails = {
-                "admin@college.edu",
-                "superadmin@campushub.edu",
-                "academic@campushub.edu",
-                "finance@campushub.edu",
-                "library@campushub.edu",
-                "placement@campushub.edu",
-                "admin1@campushub.edu",
-                "admin2@campushub.edu",
-                "admin3@campushub.edu",
-                "admin4@campushub.edu"
-            };
-            for (String email : adminEmails) {
+        // 1. Generate 10 Admins
+        String[] adminEmails = {
+            "admin@college.edu",
+            "superadmin@campushub.edu",
+            "academic@campushub.edu",
+            "finance@campushub.edu",
+            "library@campushub.edu",
+            "placement@campushub.edu",
+            "admin1@campushub.edu",
+            "admin2@campushub.edu",
+            "admin3@campushub.edu",
+            "admin4@campushub.edu"
+        };
+        for (String email : adminEmails) {
+            if (userRepository.findByEmail(email).isEmpty()) {
                 userRepository.save(User.builder().email(email).password(defaultPasswordHash).role(Role.ADMIN).build());
             }
+        }
 
-            // 2. Generate 20 Faculty (1 primary + 19 generated)
+        // 2. Generate 20 Faculty (1 primary + 19 generated)
+        if (userRepository.findByEmail("faculty@college.edu").isEmpty()) {
             userRepository.save(User.builder().email("faculty@college.edu").password(defaultPasswordHash).role(Role.FACULTY).build());
+        }
+        if (facultyRepository.findByEmail("faculty@college.edu").isEmpty()) {
             facultyRepository.save(Faculty.builder()
                     .name("Prof. Saradha Krishnan")
                     .employeeId("EMP-CS-201")
@@ -115,17 +119,21 @@ public class MongoDataInitializer implements CommandLineRunner {
                     .bloodGroup("O-")
                     .joiningDate("August 1, 2018")
                     .build());
+        }
 
-            String[] depts = {
-                "Computer Science & Engineering", "Electrical Engineering", "Mechanical Engineering",
-                "Business Administration", "Civil Engineering", "Electronics & Communication",
-                "Information Technology", "Chemical Engineering", "Aerospace Engineering", "Physics & Materials Science"
-            };
+        String[] depts = {
+            "Computer Science & Engineering", "Electrical Engineering", "Mechanical Engineering",
+            "Business Administration", "Civil Engineering", "Electronics & Communication",
+            "Information Technology", "Chemical Engineering", "Aerospace Engineering", "Physics & Materials Science"
+        };
 
-            for (int i = 1; i <= 19; i++) {
-                String email = "faculty" + i + "@campushub.edu";
+        for (int i = 1; i <= 19; i++) {
+            String email = "faculty" + i + "@campushub.edu";
+            if (userRepository.findByEmail(email).isEmpty()) {
                 String passwordHash = passwordEncoder.encode("faculty" + i + "@123");
                 userRepository.save(User.builder().email(email).password(passwordHash).role(Role.FACULTY).build());
+            }
+            if (facultyRepository.findByEmail(email).isEmpty()) {
                 facultyRepository.save(Faculty.builder()
                         .name(SOUTH_INDIAN_FACULTY_NAMES[(i - 1) % SOUTH_INDIAN_FACULTY_NAMES.length])
                         .employeeId("EMP-CS-30" + i)
@@ -146,9 +154,13 @@ public class MongoDataInitializer implements CommandLineRunner {
                         .joiningDate("July 15, 2020")
                         .build());
             }
+        }
 
-            // 3. Generate 100 Students (1 primary + 99 generated)
+        // 3. Generate 100 Students (1 primary + 99 generated)
+        if (userRepository.findByEmail("student@college.edu").isEmpty()) {
             userRepository.save(User.builder().email("student@college.edu").password(defaultPasswordHash).role(Role.STUDENT).build());
+        }
+        if (studentRepository.findByEmail("student@college.edu").isEmpty()) {
             studentRepository.save(Student.builder()
                     .name("Kishore Kumar")
                     .rollNo("2023CS1045")
@@ -168,11 +180,15 @@ public class MongoDataInitializer implements CommandLineRunner {
                     .mentor("Prof. Saradha Krishnan")
                     .batch("2023 - 2027")
                     .build());
+        }
 
-            for (int i = 1; i <= 99; i++) {
-                String email = "student" + i + "@campushub.edu";
+        for (int i = 1; i <= 99; i++) {
+            String email = "student" + i + "@campushub.edu";
+            if (userRepository.findByEmail(email).isEmpty()) {
                 String passwordHash = passwordEncoder.encode("student" + i + "@123");
                 userRepository.save(User.builder().email(email).password(passwordHash).role(Role.STUDENT).build());
+            }
+            if (studentRepository.findByEmail(email).isEmpty()) {
                 studentRepository.save(Student.builder()
                         .name(SOUTH_INDIAN_STUDENT_NAMES[(i - 1) % SOUTH_INDIAN_STUDENT_NAMES.length])
                         .rollNo("CH2026CS" + (1000 + i))
@@ -193,8 +209,10 @@ public class MongoDataInitializer implements CommandLineRunner {
                         .batch("2024 - 2028")
                         .build());
             }
+        }
 
-            // 4. Generate 10 Departments
+        // 4. Generate 10 Departments
+        if (departmentRepository.count() == 0) {
             String[] hodNames = {
                 "Prof. Saradha Krishnan", "Dr. Ramachandran Pillai", "Dr. Meenakshi Sundaram", "Dr. Anandakrishnan",
                 "Dr. Venkatraman", "Dr. Krishnaswamy", "Dr. Gayatri Venkataraman", "Dr. Padmanabhan Nair",
@@ -217,8 +235,15 @@ public class MongoDataInitializer implements CommandLineRunner {
                         .studentsCount(150 + i * 20)
                         .build());
             }
+        }
 
-            // 5. Generate 26 Courses covering all 10 departments
+        // 4b. Generate Courses
+        if (courseRepository.count() == 0) {
+            String[] hodNames = {
+                "Prof. Saradha Krishnan", "Dr. Ramachandran Pillai", "Dr. Meenakshi Sundaram", "Dr. Anandakrishnan",
+                "Dr. Venkatraman", "Dr. Krishnaswamy", "Dr. Gayatri Venkataraman", "Dr. Padmanabhan Nair",
+                "Dr. Soundararajan", "Dr. Chidambaram Raman"
+            };
             String[] courseCodes = {
                 "CS-301", "CS-302", "CS-303", "CS-304", "CS-305", "CS-306", "CS-401", "CS-402",
                 "EE-101", "EE-201",
@@ -281,8 +306,10 @@ public class MongoDataInitializer implements CommandLineRunner {
                         .syllabus(List.of("Module 1: Introduction", "Module 2: Advanced Topics", "Module 3: Case Studies"))
                         .build());
             }
+        }
 
-            // 6. Fee Records (Invoices and Transactions)
+        // 5. Generate Fee Records
+        if (invoiceRepository.count() == 0) {
             invoiceRepository.save(Invoice.builder()
                     .invoiceNumber("INV-2026-001")
                     .studentName("Kishore Kumar")
@@ -338,8 +365,10 @@ public class MongoDataInitializer implements CommandLineRunner {
                             .build());
                 }
             }
+        }
 
-            // 7. Exam Schedules and Results
+        // 6. Exam Schedules and Results
+        if (examScheduleRepository.count() == 0) {
             examScheduleRepository.save(ExamSchedule.builder()
                     .code("CS-301")
                     .name("Advanced Software Engineering")
@@ -348,7 +377,9 @@ public class MongoDataInitializer implements CommandLineRunner {
                     .room("LH-101")
                     .maxMarks(100)
                     .build());
+        }
 
+        if (examMarksRepository.count() == 0) {
             examMarksRepository.save(ExamMarks.builder()
                     .studentName("Kishore Kumar")
                     .rollNo("2023CS1045")
@@ -370,43 +401,56 @@ public class MongoDataInitializer implements CommandLineRunner {
                         .subjectCode("CS-301")
                         .build());
             }
+        }
 
-            // 8. Subjects
+        // 7. Subjects
+        if (subjectRepository.count() == 0) {
             subjectRepository.save(Subject.builder().code("CS301").name("Data Structures & Algorithms").department("Computer Science & Engineering").semester("3rd Semester").credits(4).instructor("Prof. Saradha Krishnan").build());
             subjectRepository.save(Subject.builder().code("CS302").name("Database Management Systems").department("Computer Science & Engineering").semester("3rd Semester").credits(4).instructor("Dr. Ramachandran Pillai").build());
             subjectRepository.save(Subject.builder().code("CS303").name("Computer Organization & Architecture").department("Computer Science & Engineering").semester("3rd Semester").credits(3).instructor("Prof. Alagappan Sundaram").build());
             subjectRepository.save(Subject.builder().code("EE101").name("Basic Electrical Engineering").department("Electrical Engineering").semester("1st Semester").credits(4).instructor("Dr. Ramachandran Pillai").build());
             subjectRepository.save(Subject.builder().code("ME201").name("Thermodynamics").department("Mechanical Engineering").semester("3rd Semester").credits(4).instructor("Dr. Meenakshi Sundaram").build());
+        }
 
-            // 9. Timetable Slots
+        // 8. Timetable Slots
+        if (timetableRepository.count() == 0) {
             timetableRepository.save(Timetable.builder().dayOfWeek("Monday").timeSlot("09:00 AM - 10:30 AM").subjectCode("CS301").subjectName("Data Structures & Algorithms").room("LHC-201").instructor("faculty@college.edu").department("Computer Science & Engineering").semester("3rd Semester").build());
             timetableRepository.save(Timetable.builder().dayOfWeek("Monday").timeSlot("02:00 PM - 03:30 PM").subjectCode("CS303").subjectName("Computer Organization & Architecture").room("LHC-104").instructor("faculty@college.edu").department("Computer Science & Engineering").semester("3rd Semester").build());
             timetableRepository.save(Timetable.builder().dayOfWeek("Tuesday").timeSlot("11:00 AM - 12:30 PM").subjectCode("CS302").subjectName("Database Management Systems").room("LHC-202").instructor("faculty@college.edu").department("Computer Science & Engineering").semester("3rd Semester").build());
+        }
 
-            // 10. Books
+        // 9. Books
+        if (bookRepository.count() == 0) {
             bookRepository.save(Book.builder().isbn("978-0131103627").title("The C Programming Language").author("Brian W. Kernighan, Dennis M. Ritchie").category("Computer Science").status("Available").build());
             bookRepository.save(Book.builder().isbn("978-0262033848").title("Introduction to Algorithms").author("Thomas H. Cormen").category("Computer Science").status("Borrowed").borrowedBy("Kishore Kumar").dueDate("2026-08-01").build());
             bookRepository.save(Book.builder().isbn("978-0321356680").title("Effective C++").author("Scott Meyers").category("Computer Science").status("Available").build());
+        }
 
-            // 11. Announcements and Notifications
+        // 10. Announcements / Notifications
+        if (announcementRepository.count() == 0) {
             announcementRepository.save(Announcement.builder().title("Mid-Semester Examination Timetable - Fall 2026").category("Exams").sender("Office of the Registrar").content("Schedules for all evaluations are now online. Check details in exam portal.").priority("High").date("2026-07-13").build());
+        }
+        if (notificationRepository.count() == 0) {
             notificationRepository.save(Notification.builder().userEmail("student@college.edu").title("Welcome to CampusHub").message("Your account is active. Explore your dashboard!").date("2026-07-15 09:00").isRead(false).build());
+        }
 
-            // 12. Helper Entities default records (LeaveRequest, ActivityLog, SystemSetting, Library)
+        // 11. Helper Entities
+        if (leaveRequestRepository.count() == 0) {
             leaveRequestRepository.save(LeaveRequest.builder().requesterEmail("student@college.edu").requesterRole("student").startDate("2026-07-20").endDate("2026-07-22").reason("Family function").status("Pending").build());
+        }
+        if (activityLogRepository.count() == 0) {
             activityLogRepository.save(ActivityLog.builder().userEmail("admin@college.edu").action("DATABASE_INITIALIZATION").details("Successfully generated MongoDB mock dataset.").timestamp(LocalDateTime.now()).build());
+        }
+        if (systemSettingRepository.count() == 0) {
             systemSettingRepository.save(SystemSetting.builder().key("maintenance_mode").value("false").description("Toggle general maintenance block").build());
+        }
+        if (libraryRepository.count() == 0) {
             libraryRepository.save(Library.builder().studentRollNo("2023CS1045").membershipStatus("Active").booksBorrowedCount(1).fineAmount(0.0).build());
         }
 
         // Ensure courses are seeded properly for all 10 departments
         if (courseRepository.count() < 26) {
             courseRepository.deleteAll();
-            String[] depts = {
-                "Computer Science & Engineering", "Electrical Engineering", "Mechanical Engineering",
-                "Business Administration", "Civil Engineering", "Electronics & Communication",
-                "Information Technology", "Chemical Engineering", "Aerospace Engineering", "Physics & Materials Science"
-            };
             String[] hodNames = {
                 "Prof. Saradha Krishnan", "Dr. Ramachandran Pillai", "Dr. Meenakshi Sundaram", "Dr. Anandakrishnan",
                 "Dr. Venkatraman", "Dr. Krishnaswamy", "Dr. Gayatri Venkataraman", "Dr. Padmanabhan Nair",
