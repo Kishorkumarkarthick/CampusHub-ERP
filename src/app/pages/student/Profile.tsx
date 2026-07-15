@@ -80,7 +80,7 @@ export default function Profile() {
     try {
       setLoading(true);
       const res = await api.get("/api/students");
-      const myRecord = res.data.find((s: StudentData) => s.email === user?.email);
+      const myRecord = res.data.find((s: StudentData) => s.email?.toLowerCase().trim() === user?.email?.toLowerCase().trim());
       let activeRecord: StudentData;
       
       if (myRecord) {

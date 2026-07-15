@@ -52,23 +52,23 @@ public class StudentController {
         Student student = studentRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Student not found with id: " + id));
 
-        student.setName(studentDetails.getName());
-        student.setRollNo(studentDetails.getRollNo());
-        student.setEmail(studentDetails.getEmail());
-        student.setPhone(studentDetails.getPhone());
-        student.setDepartment(studentDetails.getDepartment());
-        student.setSemester(studentDetails.getSemester());
-        student.setCgpa(studentDetails.getCgpa());
-        student.setAdmissionYear(studentDetails.getAdmissionYear());
-        student.setAvatar(studentDetails.getAvatar());
-        student.setStudentYear(studentDetails.getStudentYear());
-        student.setSection(studentDetails.getSection());
-        student.setAddress(studentDetails.getAddress());
-        student.setBloodGroup(studentDetails.getBloodGroup());
-        student.setParentName(studentDetails.getParentName());
-        student.setParentPhone(studentDetails.getParentPhone());
-        student.setMentor(studentDetails.getMentor());
-        student.setBatch(studentDetails.getBatch());
+        if (studentDetails.getName() != null) student.setName(studentDetails.getName());
+        if (studentDetails.getRollNo() != null) student.setRollNo(studentDetails.getRollNo());
+        if (studentDetails.getEmail() != null) student.setEmail(studentDetails.getEmail());
+        if (studentDetails.getPhone() != null) student.setPhone(studentDetails.getPhone());
+        if (studentDetails.getDepartment() != null) student.setDepartment(studentDetails.getDepartment());
+        if (studentDetails.getSemester() != null) student.setSemester(studentDetails.getSemester());
+        if (studentDetails.getCgpa() != null) student.setCgpa(studentDetails.getCgpa());
+        if (studentDetails.getAdmissionYear() != null) student.setAdmissionYear(studentDetails.getAdmissionYear());
+        if (studentDetails.getAvatar() != null) student.setAvatar(studentDetails.getAvatar());
+        if (studentDetails.getStudentYear() != null) student.setStudentYear(studentDetails.getStudentYear());
+        if (studentDetails.getSection() != null) student.setSection(studentDetails.getSection());
+        if (studentDetails.getAddress() != null) student.setAddress(studentDetails.getAddress());
+        if (studentDetails.getBloodGroup() != null) student.setBloodGroup(studentDetails.getBloodGroup());
+        if (studentDetails.getParentName() != null) student.setParentName(studentDetails.getParentName());
+        if (studentDetails.getParentPhone() != null) student.setParentPhone(studentDetails.getParentPhone());
+        if (studentDetails.getMentor() != null) student.setMentor(studentDetails.getMentor());
+        if (studentDetails.getBatch() != null) student.setBatch(studentDetails.getBatch());
 
         return ResponseEntity.ok(studentRepository.save(student));
     }

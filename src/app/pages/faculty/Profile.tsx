@@ -108,7 +108,7 @@ export default function FacultyProfile() {
     try {
       setLoading(true);
       const res = await api.get("/api/faculty");
-      const myProfile = res.data.find((f: FacultyData) => f.email === user?.email);
+      const myProfile = res.data.find((f: FacultyData) => f.email?.toLowerCase().trim() === user?.email?.toLowerCase().trim());
       
       if (myProfile) {
         setProfile(myProfile);

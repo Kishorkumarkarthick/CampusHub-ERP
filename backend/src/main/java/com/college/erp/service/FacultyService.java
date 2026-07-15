@@ -43,23 +43,23 @@ public class FacultyService {
     public Faculty updateFaculty(Long id, Faculty facultyDetails) {
         Faculty faculty = getFacultyById(id);
 
-        faculty.setName(facultyDetails.getName());
-        faculty.setEmployeeId(facultyDetails.getEmployeeId());
-        faculty.setEmail(facultyDetails.getEmail());
-        faculty.setPhone(facultyDetails.getPhone());
-        faculty.setDepartment(facultyDetails.getDepartment());
-        faculty.setDesignation(facultyDetails.getDesignation());
-        faculty.setStatus(facultyDetails.getStatus());
-        faculty.setJoiningYear(facultyDetails.getJoiningYear());
-        faculty.setAvatar(facultyDetails.getAvatar());
-        faculty.setQualification(facultyDetails.getQualification());
-        faculty.setExperience(facultyDetails.getExperience());
-        faculty.setSubjectsAssigned(facultyDetails.getSubjectsAssigned());
-        faculty.setOfficeRoom(facultyDetails.getOfficeRoom());
-        faculty.setOfficeHours(facultyDetails.getOfficeHours());
-        faculty.setAddress(facultyDetails.getAddress());
-        faculty.setBloodGroup(facultyDetails.getBloodGroup());
-        faculty.setJoiningDate(facultyDetails.getJoiningDate());
+        if (facultyDetails.getName() != null) faculty.setName(facultyDetails.getName());
+        if (facultyDetails.getEmployeeId() != null) faculty.setEmployeeId(facultyDetails.getEmployeeId());
+        if (facultyDetails.getEmail() != null) faculty.setEmail(facultyDetails.getEmail());
+        if (facultyDetails.getPhone() != null) faculty.setPhone(facultyDetails.getPhone());
+        if (facultyDetails.getDepartment() != null) faculty.setDepartment(facultyDetails.getDepartment());
+        if (facultyDetails.getDesignation() != null) faculty.setDesignation(facultyDetails.getDesignation());
+        if (facultyDetails.getStatus() != null) faculty.setStatus(facultyDetails.getStatus());
+        if (facultyDetails.getJoiningYear() != null) faculty.setJoiningYear(facultyDetails.getJoiningYear());
+        if (facultyDetails.getAvatar() != null) faculty.setAvatar(facultyDetails.getAvatar());
+        if (facultyDetails.getQualification() != null) faculty.setQualification(facultyDetails.getQualification());
+        if (facultyDetails.getExperience() != null) faculty.setExperience(facultyDetails.getExperience());
+        if (facultyDetails.getSubjectsAssigned() != null) faculty.setSubjectsAssigned(facultyDetails.getSubjectsAssigned());
+        if (facultyDetails.getOfficeRoom() != null) faculty.setOfficeRoom(facultyDetails.getOfficeRoom());
+        if (facultyDetails.getOfficeHours() != null) faculty.setOfficeHours(facultyDetails.getOfficeHours());
+        if (facultyDetails.getAddress() != null) faculty.setAddress(facultyDetails.getAddress());
+        if (facultyDetails.getBloodGroup() != null) faculty.setBloodGroup(facultyDetails.getBloodGroup());
+        if (facultyDetails.getJoiningDate() != null) faculty.setJoiningDate(facultyDetails.getJoiningDate());
 
         return facultyRepository.save(faculty);
     }
