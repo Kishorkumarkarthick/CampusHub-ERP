@@ -94,9 +94,9 @@ export default function AdminApprovals() {
   };
 
   const filteredRequests = requests.filter((r) => {
-    const matchesSearch = r.studentName.toLowerCase().includes(searchQuery.toLowerCase()) ||
-                          r.studentId.toLowerCase().includes(searchQuery.toLowerCase()) ||
-                          r.department.toLowerCase().includes(searchQuery.toLowerCase());
+    const matchesSearch = (r.studentName || "").toLowerCase().includes(searchQuery.toLowerCase()) ||
+                          (r.studentId || "").toLowerCase().includes(searchQuery.toLowerCase()) ||
+                          (r.department || "").toLowerCase().includes(searchQuery.toLowerCase());
     const matchesType = typeFilter === "All" || r.requestType === typeFilter;
     return matchesSearch && matchesType;
   });
@@ -205,7 +205,7 @@ export default function AdminApprovals() {
               </thead>
               <tbody>
                 {filteredRequests.map((req) => (
-                  <tr key={req.id} className="border-b border-border/50 hover:bg-muted/10">
+                  <tr key={`${req.requestType}-${req.id}`} className="border-b border-border/50 hover:bg-muted/10">
                     <td className="py-4 px-2">
                       <p className="font-bold">{req.studentName}</p>
                       <p className="text-[10px] text-muted-foreground">{req.studentId} | {req.department}</p>

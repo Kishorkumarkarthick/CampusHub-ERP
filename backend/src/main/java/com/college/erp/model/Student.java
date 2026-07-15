@@ -26,11 +26,13 @@ public class Student {
     private String bloodGroup;
     private String parentName;
     private String parentPhone;
+    private String mentor;
+    private String batch;
 
     // Constructors
     public Student() {}
 
-    public Student(Long id, String name, String rollNo, String email, String phone, String department, String semester, Double cgpa, Integer admissionYear, String avatar, String studentYear, String section, String address, String bloodGroup, String parentName, String parentPhone) {
+    public Student(Long id, String name, String rollNo, String email, String phone, String department, String semester, Double cgpa, Integer admissionYear, String avatar, String studentYear, String section, String address, String bloodGroup, String parentName, String parentPhone, String mentor, String batch) {
         this.id = id;
         this.name = name;
         this.rollNo = rollNo;
@@ -47,6 +49,8 @@ public class Student {
         this.bloodGroup = bloodGroup;
         this.parentName = parentName;
         this.parentPhone = parentPhone;
+        this.mentor = mentor;
+        this.batch = batch;
     }
 
     // Getters and Setters
@@ -98,6 +102,12 @@ public class Student {
     public String getParentPhone() { return parentPhone; }
     public void setParentPhone(String parentPhone) { this.parentPhone = parentPhone; }
 
+    public String getMentor() { return mentor; }
+    public void setMentor(String mentor) { this.mentor = mentor; }
+
+    public String getBatch() { return batch; }
+    public void setBatch(String batch) { this.batch = batch; }
+
     // Builder Pattern
     public static StudentBuilder builder() {
         return new StudentBuilder();
@@ -120,6 +130,8 @@ public class Student {
         private String bloodGroup;
         private String parentName;
         private String parentPhone;
+        private String mentor;
+        private String batch;
 
         public StudentBuilder id(Long id) { this.id = id; return this; }
         public StudentBuilder name(String name) { this.name = name; return this; }
@@ -137,9 +149,11 @@ public class Student {
         public StudentBuilder bloodGroup(String bloodGroup) { this.bloodGroup = bloodGroup; return this; }
         public StudentBuilder parentName(String parentName) { this.parentName = parentName; return this; }
         public StudentBuilder parentPhone(String parentPhone) { this.parentPhone = parentPhone; return this; }
+        public StudentBuilder mentor(String mentor) { this.mentor = mentor; return this; }
+        public StudentBuilder batch(String batch) { this.batch = batch; return this; }
 
         public Student build() {
-            return new Student(id, name, rollNo, email, phone, department, semester, cgpa, admissionYear, avatar, studentYear, section, address, bloodGroup, parentName, parentPhone);
+            return new Student(id, name, rollNo, email, phone, department, semester, cgpa, admissionYear, avatar, studentYear, section, address, bloodGroup, parentName, parentPhone, mentor, batch);
         }
     }
 }

@@ -19,6 +19,7 @@ import {
   Clock,
   Heart,
   FileText,
+  Upload,
 } from "lucide-react";
 import { toast } from "sonner";
 
@@ -62,6 +63,46 @@ export default function FacultyProfile() {
   const [editAddress, setEditAddress] = useState("");
   const [editBloodGroup, setEditBloodGroup] = useState("");
   const [editJoiningDate, setEditJoiningDate] = useState("");
+
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = (event) => {
+        const img = new Image();
+        img.onload = () => {
+          const canvas = document.createElement("canvas");
+          const max_size = 150;
+          let width = img.width;
+          let height = img.height;
+          
+          if (width > height) {
+            if (width > max_size) {
+              height *= max_size / width;
+              width = max_size;
+            }
+          } else {
+            if (height > max_size) {
+              width *= max_size / height;
+              height = max_size;
+            }
+          }
+          
+          canvas.width = width;
+          canvas.height = height;
+          const ctx = canvas.getContext("2d");
+          ctx?.drawImage(img, 0, 0, width, height);
+          const dataUrl = canvas.toDataURL("image/jpeg", 0.8);
+          
+          setEditAvatar(dataUrl);
+          setProfile((prev) => (prev ? { ...prev, avatar: dataUrl } : null));
+          toast.success("Photo selected. Save changes below to persist.");
+        };
+        img.src = event.target?.result as string;
+      };
+      reader.readAsDataURL(file);
+    }
+  };
 
   const fetchProfile = async () => {
     try {
@@ -226,14 +267,26 @@ export default function FacultyProfile() {
         {/* Left Side: Avatar Card */}
         <div className="space-y-6">
           <div className="bg-card border border-border rounded-2xl p-6 shadow-sm flex flex-col items-center text-center space-y-4">
-            <img
-              src={profile.avatar || defaultAvatar}
-              onError={(e) => {
-                (e.target as HTMLImageElement).src = defaultAvatar;
-              }}
-              alt={profile.name}
-              className="w-32 h-32 rounded-full border-4 border-emerald-500/20 object-cover shadow-sm"
-            />
+            <div className="relative group w-32 h-32 mx-auto">
+              <img
+                src={profile.avatar || defaultAvatar}
+                onError={(e) => {
+                  (e.target as HTMLImageElement).src = defaultAvatar;
+                }}
+                alt={profile.name}
+                className="w-32 h-32 rounded-full border-4 border-emerald-500/20 object-cover shadow-sm"
+              />
+              <label className="absolute inset-0 bg-black/50 text-white rounded-full flex flex-col items-center justify-center text-[10px] font-bold opacity-0 group-hover:opacity-100 transition-opacity cursor-pointer select-none">
+                <Upload className="w-5 h-5 mb-1" />
+                Upload Photo
+                <input
+                  type="file"
+                  accept="image/*"
+                  className="hidden"
+                  onChange={handleFileChange}
+                />
+              </label>
+            </div>
             <div>
               <h2 className="text-lg font-bold text-foreground">{profile.name}</h2>
               <p className="text-xs text-emerald-600 dark:text-emerald-400 font-bold uppercase tracking-wider mt-1">

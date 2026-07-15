@@ -157,8 +157,8 @@ export default function StudentRequests() {
   };
 
   const filteredRequests = requests.filter((r) => {
-    const matchesSearch = r.reason.toLowerCase().includes(searchQuery.toLowerCase()) || 
-                          r.requestType.toLowerCase().includes(searchQuery.toLowerCase());
+    const matchesSearch = (r.reason || "").toLowerCase().includes(searchQuery.toLowerCase()) || 
+                          (r.requestType || "").toLowerCase().includes(searchQuery.toLowerCase());
     const matchesStatus = statusFilter === "All" || r.finalStatus === statusFilter;
     return matchesSearch && matchesStatus;
   });
@@ -416,7 +416,7 @@ export default function StudentRequests() {
                   </thead>
                   <tbody>
                     {filteredRequests.map((req) => (
-                      <tr key={req.id} className="border-b border-border/50 text-xs hover:bg-muted/10">
+                      <tr key={`${req.requestType}-${req.id}`} className="border-b border-border/50 text-xs hover:bg-muted/10">
                         <td className="py-4 px-2 font-bold flex items-center gap-2">
                           <FileText className="w-4 h-4 text-indigo-500" />
                           {req.requestType}

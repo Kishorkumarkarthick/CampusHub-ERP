@@ -190,7 +190,9 @@ public class AuthController {
                     .address(student.getAddress())
                     .bloodGroup(student.getBloodGroup())
                     .parentName(student.getParentName())
-                    .parentPhone(student.getParentPhone());
+                    .parentPhone(student.getParentPhone())
+                    .mentor(student.getMentor())
+                    .batch(student.getBatch());
         } else if (user.getRole() == Role.FACULTY) {
             Faculty faculty = facultyRepository.findByEmail(user.getEmail())
                     .orElseThrow(() -> new RuntimeException("Faculty profile not found"));

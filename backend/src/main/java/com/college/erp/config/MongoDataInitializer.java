@@ -165,6 +165,8 @@ public class MongoDataInitializer implements CommandLineRunner {
                     .bloodGroup("AB+")
                     .parentName("Maniam Sundaram")
                     .parentPhone("+1 (555) 019-9021")
+                    .mentor("Prof. Saradha Krishnan")
+                    .batch("2023 - 2027")
                     .build());
 
             for (int i = 1; i <= 99; i++) {
@@ -187,6 +189,8 @@ public class MongoDataInitializer implements CommandLineRunner {
                         .bloodGroup("A+")
                         .parentName(SOUTH_INDIAN_PARENT_NAMES[(i - 1) % SOUTH_INDIAN_PARENT_NAMES.length])
                         .parentPhone("+91 98765 0000" + (i % 10))
+                        .mentor(SOUTH_INDIAN_FACULTY_NAMES[(i - 1) % SOUTH_INDIAN_FACULTY_NAMES.length])
+                        .batch("2024 - 2028")
                         .build());
             }
 

@@ -12,6 +12,15 @@ export interface User {
   rollNo?: string;
   semester?: string;
   title?: string;
+  mentor?: string;
+  batch?: string;
+  section?: string;
+  studentYear?: string;
+  address?: string;
+  bloodGroup?: string;
+  parentName?: string;
+  parentPhone?: string;
+  phone?: string;
 }
 
 interface AuthContextType {
@@ -54,7 +63,7 @@ const SOUTH_INDIAN_FACULTY = [
 const DEMO_USERS: Record<string, { password: string; user: User }> = {
   "student@college.edu": {
     password: "password123",
-    user: { id: "s1", name: "Kishore Kumar", email: "student@college.edu", role: "student", department: "Computer Science & Engineering", rollNo: "2023CS1045", semester: "5th Semester", avatar: "https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?w=150" },
+    user: { id: "s1", name: "Kishore Kumar", email: "student@college.edu", role: "student", department: "Computer Science & Engineering", rollNo: "2023CS1045", semester: "5th Semester", avatar: "https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?w=150", mentor: "Prof. Saradha Krishnan", batch: "2023 - 2027", section: "Section A", studentYear: "3rd Year", address: "No. 12, Gandhi Street, Chennai", bloodGroup: "AB+", parentName: "Maniam Sundaram", parentPhone: "+1 (555) 019-9021", phone: "+1 (555) 019-2834" },
   },
   "faculty@college.edu": {
     password: "password123",
@@ -102,6 +111,15 @@ for (let i = 1; i <= 10; i++) {
       semester: "5th Semester",
       avatar: "https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?w=150",
       title: "3rd Year",
+      mentor: SOUTH_INDIAN_FACULTY[i - 1] || "Dr. Padmanabhan Nair",
+      batch: "2023 - 2027",
+      section: "Section A",
+      studentYear: "3rd Year",
+      address: `Campus Hostel, Room ${100 + i}`,
+      bloodGroup: "O+",
+      parentName: `Parent of ${SOUTH_INDIAN_STUDENTS[i - 1] || `Student ${i}`}`,
+      parentPhone: `+91 98765 0000${i}`,
+      phone: `+91 98765 4321${i % 10}`
     },
   };
 }
@@ -158,6 +176,15 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         rollNo: profile.rollNo,
         semester: profile.semester,
         title: profile.title || profile.studentYear,
+        mentor: profile.mentor,
+        batch: profile.batch,
+        section: profile.section,
+        studentYear: profile.studentYear,
+        address: profile.address,
+        bloodGroup: profile.bloodGroup,
+        parentName: profile.parentName,
+        parentPhone: profile.parentPhone,
+        phone: profile.phone,
       };
       setUser(mappedUser);
       localStorage.setItem("erp_user", JSON.stringify(mappedUser));
@@ -220,6 +247,15 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         rollNo: profile.rollNo,
         semester: profile.semester,
         title: profile.title || profile.studentYear,
+        mentor: profile.mentor,
+        batch: profile.batch,
+        section: profile.section,
+        studentYear: profile.studentYear,
+        address: profile.address,
+        bloodGroup: profile.bloodGroup,
+        parentName: profile.parentName,
+        parentPhone: profile.parentPhone,
+        phone: profile.phone,
       };
 
       setUser(mappedUser);

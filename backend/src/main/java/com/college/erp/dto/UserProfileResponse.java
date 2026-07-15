@@ -29,6 +29,8 @@ public class UserProfileResponse {
     private String bloodGroup;
     private String parentName;
     private String parentPhone;
+    private String mentor;
+    private String batch;
 
     // Faculty fields
     private String employeeId;

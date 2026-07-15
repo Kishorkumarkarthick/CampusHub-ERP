@@ -67,6 +67,8 @@ public class StudentController {
         student.setBloodGroup(studentDetails.getBloodGroup());
         student.setParentName(studentDetails.getParentName());
         student.setParentPhone(studentDetails.getParentPhone());
+        student.setMentor(studentDetails.getMentor());
+        student.setBatch(studentDetails.getBatch());
 
         return ResponseEntity.ok(studentRepository.save(student));
     }
